@@ -19,6 +19,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
             color: #333;
+            padding-top: 80px;
         }
         
         .navbar {
@@ -58,7 +59,7 @@
         .hero-section {
             background-color: var(--ncc-blue);
             color: white;
-            padding: 120px 0 80px;
+            padding: 100px 0 60px;
             margin-bottom: 40px;
             text-align: center;
             background-image: linear-gradient(to right, var(--ncc-blue), #1a3a8f);
@@ -67,76 +68,92 @@
         .hero-section h1 {
             font-weight: 700;
             margin-bottom: 20px;
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
         }
         
         .hero-section p {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             opacity: 0.9;
             max-width: 700px;
             margin: 0 auto;
         }
         
-        /* Camp Cards */
-        .camps-container {
-            padding: 30px 0 60px;
+        /* Flip Card Container */
+        .flip-card-container {
+            perspective: 1000px;
+            margin-bottom: 30px;
+            height: 500px;
         }
         
-        .camp-card {
-            border: none;
+        .flip-card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .flip-card-container.flipped .flip-card {
+            transform: rotateY(180deg);
+        }
+        
+        /* Front and back of card */
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            margin-bottom: 0;
             background-color: white;
-            height: 100%;
         }
         
-        .camp-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        /* Front card styling */
+        .flip-card-front {
+            display: flex;
+            flex-direction: column;
         }
         
-        .camp-image {
+        .flip-card-front .camp-image {
             width: 100%;
             height: 220px;
             overflow: hidden;
-            position: relative;
+            transition: all 0.3s;
         }
         
-        .camp-image img {
+        .flip-card-front .camp-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
         
-        .camp-card:hover .camp-image img {
-            transform: scale(1.08);
-        }
-        
-        .camp-content {
+        .flip-card-front .camp-content {
             padding: 25px;
-            position: relative;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
         
-        .camp-content h3 {
+        .flip-card-front .camp-content h3 {
             margin-bottom: 15px;
             font-weight: 700;
             color: var(--ncc-blue);
-            font-size: 1.5rem;
+            font-size: 1.4rem;
+            transition: color 0.3s;
         }
         
-        .camp-content p {
+        .flip-card-front .camp-content p {
             color: #555;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             line-height: 1.6;
-            font-size: 1rem;
+            flex-grow: 1;
         }
         
-        .btn-read-more {
+        .flip-card-front .btn-read-more {
             background-color: var(--ncc-blue);
             color: white;
             border: none;
@@ -146,22 +163,89 @@
             transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
-            font-size: 0.95rem;
+            align-self: flex-start;
+            cursor: pointer;
         }
         
-        .btn-read-more:hover {
+        .flip-card-front .btn-read-more:hover {
             background-color: var(--ncc-light-blue);
             color: white;
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(62, 146, 204, 0.3);
         }
         
+        /* Hover effects for front card */
+        .flip-card-container:not(.flipped):hover .flip-card-front {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .flip-card-container:not(.flipped):hover .flip-card-front .camp-image {
+            transform: translateY(-5px);
+        }
+        
+        .flip-card-container:not(.flipped):hover .flip-card-front .camp-image img {
+            transform: scale(1.05);
+        }
+        
+        .flip-card-container:not(.flipped):hover .flip-card-front .camp-content h3 {
+            color: var(--ncc-light-blue);
+        }
+        
+        /* Back card styling */
+        .flip-card-back {
+            transform: rotateY(180deg);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .flip-card-back h3 {
+            color: var(--ncc-blue);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .flip-card-back p, .flip-card-back ul {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .flip-card-back ul {
+            padding-left: 20px;
+        }
+        
+        .flip-card-back li {
+            margin-bottom: 8px;
+        }
+        
+        .flip-card-back .btn-close-details {
+            background-color: var(--ncc-blue);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: auto;
+            align-self: flex-start;
+            transition: all 0.3s;
+        }
+        
+        .flip-card-back .btn-close-details:hover {
+            background-color: var(--ncc-light-blue);
+            transform: translateY(-2px);
+        }
+        
         /* Footer */
         footer {
             background-color: var(--ncc-dark);
             color: white;
-            padding: 40px 0;
-            margin-top: 60px;
+            padding: 30px 0;
+            margin-top: 50px;
         }
         
         footer p {
@@ -170,19 +254,10 @@
             font-size: 1rem;
         }
         
-        /* Spacing adjustments */
-        .row {
-            row-gap: 40px;
-        }
-        
-        .camp-card {
-            margin-bottom: 0;
-        }
-        
         /* Section title */
         .section-title {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             color: var(--ncc-blue);
         }
         
@@ -205,23 +280,9 @@
         }
         
         /* Responsive adjustments */
-        @media (max-width: 1200px) {
-            .hero-section {
-                padding: 100px 0 70px;
-            }
-        }
-        
         @media (max-width: 992px) {
-            .hero-section {
-                padding: 90px 0 60px;
-            }
-            
-            .hero-section h1 {
-                font-size: 2.4rem;
-            }
-            
-            .row {
-                row-gap: 35px;
+            .flip-card-container {
+                height: 550px;
             }
         }
         
@@ -231,41 +292,25 @@
             }
             
             .hero-section h1 {
-                font-size: 2.1rem;
+                font-size: 2rem;
             }
             
-            .hero-section p {
-                font-size: 1.1rem;
-            }
-            
-            .camp-content {
-                padding: 20px;
-            }
-            
-            .camp-image {
-                height: 200px;
-            }
-            
-            .row {
-                row-gap: 30px;
+            .flip-card-container {
+                height: 500px;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
             }
         }
         
         @media (max-width: 576px) {
-            .navbar-brand {
-                font-size: 1rem;
+            .flip-card-container {
+                height: 550px;
             }
             
-            .hero-section {
-                padding: 70px 0 40px;
-            }
-            
-            .hero-section h1 {
-                font-size: 1.8rem;
-            }
-            
-            .camp-content h3 {
-                font-size: 1.3rem;
+            .flip-card-front .camp-content,
+            .flip-card-back {
+                padding: 20px;
             }
         }
     </style>
@@ -303,113 +348,264 @@
     </section>
 
     <!-- Camps Section -->
-    <section class="camps-container">
+    <section class="py-5">
         <div class="container">
             <div class="section-title">
                 <h2>Our Featured Camps</h2>
             </div>
             <div class="row">
-                <!-- Camp Cards -->
+                <!-- All India Vayu Sainik Camp -->
                 <div class="col-lg-4 col-md-6">
-                    <div class="camp-card">
-                        <div class="camp-image">
-                            <img src="images/aivsc.jpg" alt="All India Vayu Sainik Camp">
-                        </div>
-                        <div class="camp-content">
-                            <h3>All India Vayu Sainik Camp</h3>
-                            <p>Distinguished camp for air force training where cadets showcase their skills in aviation and technical events.</p>
-                            <a href="#" class="btn-read-more">Read More</a>
+                    <div class="flip-card-container" id="camp1" onmouseleave="checkAndFlipBack('camp1')">
+                        <div class="flip-card">
+                            <div class="flip-card-front">
+                                <div class="camp-image">
+                                    <img src="images/aivsc.jpg" alt="All India Vayu Sainik Camp">
+                                </div>
+                                <div class="camp-content">
+                                    <h3>All India Vayu Sainik Camp</h3>
+                                    <p>Distinguished camp for air force training where cadets showcase their skills in aviation and technical events.</p>
+                                    <button class="btn-read-more" onclick="flipCard('camp1')">Read More</button>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3>All India Vayu Sainik Camp</h3>
+                                <p>The premier NCC Air Wing camp conducted at Air Force stations across India. Selected cadets undergo:</p>
+                                <ul>
+                                    <li>Intensive training in aeromodelling and aviation</li>
+                                    <li>Skeet shooting competitions</li>
+                                    <li>Aircraft recognition tests</li>
+                                    <li>Flight simulation experiences</li>
+                                    <li>Technical workshops with IAF personnel</li>
+                                </ul>
+                                <p>Duration: 10 days | Location: Various Air Force Stations</p>
+                                <p>Eligibility: 'A' Certificate holders with minimum 'B' grade</p>
+                                <button class="btn-close-details" onclick="flipCard('camp1')">Close Details</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Republic Day Camp -->
                 <div class="col-lg-4 col-md-6">
-                    <div class="camp-card">
-                        <div class="camp-image">
-                            <img src="images/rdc.jpg" alt="Republic Day Camp">
-                        </div>
-                        <div class="camp-content">
-                            <h3>Republic Day Camp</h3>
-                            <p>National camp held to celebrate Republic Day with cadets across India participating in cultural and military displays.</p>
-                            <a href="#" class="btn-read-more">Read More</a>
+                    <div class="flip-card-container" id="camp2" onmouseleave="checkAndFlipBack('camp2')">
+                        <div class="flip-card">
+                            <div class="flip-card-front">
+                                <div class="camp-image">
+                                    <img src="images/rdc.jpg" alt="Republic Day Camp">
+                                </div>
+                                <div class="camp-content">
+                                    <h3>Republic Day Camp</h3>
+                                    <p>National camp held to celebrate Republic Day with cadets across India participating in cultural and military displays.</p>
+                                    <button class="btn-read-more" onclick="flipCard('camp2')">Read More</button>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3>Republic Day Camp</h3>
+                                <p>The most prestigious NCC camp held annually in Delhi:</p>
+                                <ul>
+                                    <li>Prime Minister's Rally showcasing NCC talents</li>
+                                    <li>Participation in Republic Day Parade at Rajpath</li>
+                                    <li>Cultural performances from all states</li>
+                                    <li>Best Cadet competitions in various disciplines</li>
+                                    <li>Interaction with senior military officials</li>
+                                </ul>
+                                <p>Duration: 4 weeks | Location: Delhi Cantonment</p>
+                                <p>Selection: Through rigorous state and national level competitions</p>
+                                <button class="btn-close-details" onclick="flipCard('camp2')">Close Details</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Ek Bharat Shrestha Bharat -->
                 <div class="col-lg-4 col-md-6">
-                    <div class="camp-card">
-                        <div class="camp-image">
-                            <img src="images/camps/ebsb.jpg" alt="Ek Bharat Shrestha Bharat">
-                        </div>
-                        <div class="camp-content">
-                            <h3>Ek Bharat Shrestha Bharat</h3>
-                            <p>Program to promote national integration through cultural exchange between cadets from different states.</p>
-                            <a href="#" class="btn-read-more">Read More</a>
+                    <div class="flip-card-container" id="camp3" onmouseleave="checkAndFlipBack('camp3')">
+                        <div class="flip-card">
+                            <div class="flip-card-front">
+                                <div class="camp-image">
+                                    <img src="images/camps/ebsb.jpg" alt="Ek Bharat Shrestha Bharat">
+                                </div>
+                                <div class="camp-content">
+                                    <h3>Ek Bharat Shrestha Bharat</h3>
+                                    <p>Program to promote national integration through cultural exchange between cadets from different states.</p>
+                                    <button class="btn-read-more" onclick="flipCard('camp3')">Read More</button>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3>Ek Bharat Shrestha Bharat</h3>
+                                <p>National integration camp featuring:</p>
+                                <ul>
+                                    <li>State pairing system for cultural exchange</li>
+                                    <li>Language learning sessions</li>
+                                    <li>Traditional art and craft workshops</li>
+                                    <li>Joint community service projects</li>
+                                    <li>Cultural night showcasing diverse traditions</li>
+                                </ul>
+                                <p>Duration: 2 weeks | Location: Various states on rotation</p>
+                                <p>Unique Feature: Cadets stay with buddy from paired state</p>
+                                <button class="btn-close-details" onclick="flipCard('camp3')">Close Details</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Mavlankar Camp -->
                 <div class="col-lg-4 col-md-6">
-                    <div class="camp-card">
-                        <div class="camp-image">
-                            <img src="images/camps/mavlankar.jpg" alt="Mavlankar Camp">
-                        </div>
-                        <div class="camp-content">
-                            <h3>Mavlankar Camp</h3>
-                            <p>A camp focusing on leadership development and physical fitness for senior cadets.</p>
-                            <a href="#" class="btn-read-more">Read More</a>
+                    <div class="flip-card-container" id="camp4" onmouseleave="checkAndFlipBack('camp4')">
+                        <div class="flip-card">
+                            <div class="flip-card-front">
+                                <div class="camp-image">
+                                    <img src="images/camps/mavlankar.jpg" alt="Mavlankar Camp">
+                                </div>
+                                <div class="camp-content">
+                                    <h3>Mavlankar Camp</h3>
+                                    <p>A camp focusing on leadership development and physical fitness for senior cadets.</p>
+                                    <button class="btn-read-more" onclick="flipCard('camp4')">Read More</button>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3>Mavlankar Camp</h3>
+                                <p>Advanced leadership camp includes:</p>
+                                <ul>
+                                    <li>Obstacle course training</li>
+                                    <li>Map reading and navigation exercises</li>
+                                    <li>Command task execution</li>
+                                    <li>Public speaking workshops</li>
+                                    <li>50km route march challenge</li>
+                                </ul>
+                                <p>Duration: 12 days | Location: NCC Academies</p>
+                                <p>Named After: First Speaker of Lok Sabha, G.V. Mavlankar</p>
+                                <button class="btn-close-details" onclick="flipCard('camp4')">Close Details</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- MENU Camp -->
                 <div class="col-lg-4 col-md-6">
-                    <div class="camp-card">
-                        <div class="camp-image">
-                            <img src="images/camps/menu.jpg" alt="MENU Camp">
-                        </div>
-                        <div class="camp-content">
-                            <h3>MENU Camp</h3>
-                            <p>A special training camp for young NCC cadets focusing on basic military and adventure activities.</p>
-                            <a href="#" class="btn-read-more">Read More</a>
+                    <div class="flip-card-container" id="camp5" onmouseleave="checkAndFlipBack('camp5')">
+                        <div class="flip-card">
+                            <div class="flip-card-front">
+                                <div class="camp-image">
+                                    <img src="images/camps/menu.jpg" alt="MENU Camp">
+                                </div>
+                                <div class="camp-content">
+                                    <h3>MENU Camp</h3>
+                                    <p>A special training camp for young NCC cadets focusing on basic military and adventure activities.</p>
+                                    <button class="btn-read-more" onclick="flipCard('camp5')">Read More</button>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3>MENU Camp</h3>
+                                <p>Motivation and Enlightenment for New Units camp offers:</p>
+                                <ul>
+                                    <li>Basic drill and discipline training</li>
+                                    <li>Introduction to weapons handling</li>
+                                    <li>Team-building activities</li>
+                                    <li>Adventure sports like rappelling</li>
+                                    <li>NCC history and values orientation</li>
+                                </ul>
+                                <p>Duration: 7 days | Location: State NCC headquarters</p>
+                                <p>Purpose: Introduce new cadets to NCC fundamentals</p>
+                                <button class="btn-close-details" onclick="flipCard('camp5')">Close Details</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Basic Leadership Camp -->
                 <div class="col-lg-4 col-md-6">
-                    <div class="camp-card">
-                        <div class="camp-image">
-                            <img src="images/camps/blc.jpg" alt="Basic Leadership Camp">
-                        </div>
-                        <div class="camp-content">
-                            <h3>Basic Leadership Camp</h3>
-                            <p>Fundamental leadership training for cadets to develop command and organizational skills.</p>
-                            <a href="#" class="btn-read-more">Read More</a>
+                    <div class="flip-card-container" id="camp6" onmouseleave="checkAndFlipBack('camp6')">
+                        <div class="flip-card">
+                            <div class="flip-card-front">
+                                <div class="camp-image">
+                                    <img src="images/camps/blc.jpg" alt="Basic Leadership Camp">
+                                </div>
+                                <div class="camp-content">
+                                    <h3>Basic Leadership Camp</h3>
+                                    <p>Fundamental leadership training for cadets to develop command and organizational skills.</p>
+                                    <button class="btn-read-more" onclick="flipCard('camp6')">Read More</button>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3>Basic Leadership Camp</h3>
+                                <p>Foundation for NCC leadership development:</p>
+                                <ul>
+                                    <li>Squad drill commands practice</li>
+                                    <li>Camp planning and execution</li>
+                                    <li>Basic first aid certification</li>
+                                    <li>Time management workshops</li>
+                                    <li>Leadership role rotations</li>
+                                </ul>
+                                <p>Duration: 10 days | Location: Group Headquarters</p>
+                                <p>Prerequisite: Minimum 6 months in NCC</p>
+                                <button class="btn-close-details" onclick="flipCard('camp6')">Close Details</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Advance Leadership Camp -->
                 <div class="col-lg-4 col-md-6">
-                    <div class="camp-card">
-                        <div class="camp-image">
-                            <img src="images/camps/alc.jpg" alt="Advance Leadership Camp">
-                        </div>
-                        <div class="camp-content">
-                            <h3>Advance Leadership Camp</h3>
-                            <p>Advanced training for future leaders in the NCC with complex scenarios and challenges.</p>
-                            <a href="#" class="btn-read-more">Read More</a>
+                    <div class="flip-card-container" id="camp7" onmouseleave="checkAndFlipBack('camp7')">
+                        <div class="flip-card">
+                            <div class="flip-card-front">
+                                <div class="camp-image">
+                                    <img src="images/camps/alc.jpg" alt="Advance Leadership Camp">
+                                </div>
+                                <div class="camp-content">
+                                    <h3>Advance Leadership Camp</h3>
+                                    <p>Advanced training for future leaders in the NCC with complex scenarios and challenges.</p>
+                                    <button class="btn-read-more" onclick="flipCard('camp7')">Read More</button>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3>Advance Leadership Camp</h3>
+                                <p>For senior cadets preparing for officer roles:</p>
+                                <ul>
+                                    <li>Crisis management simulations</li>
+                                    <li>Advanced navigation exercises</li>
+                                    <li>Officer-like qualities assessment</li>
+                                    <li>Full camp planning and execution</li>
+                                    <li>Joint operations with other services</li>
+                                </ul>
+                                <p>Duration: 14 days | Location: NCC Academies</p>
+                                <p>Selection: Based on BLC performance</p>
+                                <button class="btn-close-details" onclick="flipCard('camp7')">Close Details</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Trekking Camp -->
                 <div class="col-lg-4 col-md-6">
-                    <div class="camp-card">
-                        <div class="camp-image">
-                            <img src="images/camps/trekking.jpg" alt="Trekking Camp">
-                        </div>
-                        <div class="camp-content">
-                            <h3>Trekking Camp</h3>
-                            <p>Challenging outdoor camp with trekking expeditions in difficult terrain to build endurance.</p>
-                            <a href="#" class="btn-read-more">Read More</a>
+                    <div class="flip-card-container" id="camp8" onmouseleave="checkAndFlipBack('camp8')">
+                        <div class="flip-card">
+                            <div class="flip-card-front">
+                                <div class="camp-image">
+                                    <img src="images/camps/trekking.jpg" alt="Trekking Camp">
+                                </div>
+                                <div class="camp-content">
+                                    <h3>Trekking Camp</h3>
+                                    <p>Challenging outdoor camp with trekking expeditions in difficult terrain to build endurance.</p>
+                                    <button class="btn-read-more" onclick="flipCard('camp8')">Read More</button>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3>Trekking Camp</h3>
+                                <p>Adventure-based camp in mountainous regions:</p>
+                                <ul>
+                                    <li>High-altitude treks (up to 12,000 ft)</li>
+                                    <li>Survival skills training</li>
+                                    <li>Rock climbing and rappelling</li>
+                                    <li>Night navigation exercises</li>
+                                    <li>Environmental conservation projects</li>
+                                </ul>
+                                <p>Duration: 7-10 days | Location: Himalayan regions</p>
+                                <p>Requirement: Medical fitness certificate mandatory</p>
+                                <button class="btn-close-details" onclick="flipCard('camp8')">Close Details</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -425,5 +621,37 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function flipCard(cardId) {
+            const cardContainer = document.getElementById(cardId);
+            cardContainer.classList.add('flipped');
+        }
+        
+        function checkAndFlipBack(cardId) {
+            const cardContainer = document.getElementById(cardId);
+            if (cardContainer.classList.contains('flipped')) {
+                cardContainer.classList.remove('flipped');
+            }
+        }
+        
+        // Add hover effect for non-touch devices
+        if (!('ontouchstart' in window || navigator.maxTouchPoints)) {
+            document.querySelectorAll('.flip-card-container').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('flipped')) {
+                        this.querySelector('.flip-card-front').style.transform = 'translateY(-5px)';
+                        this.querySelector('.flip-card-front').style.boxShadow = '0 10px 25px rgba(0,0,0,0.15)';
+                    }
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('flipped')) {
+                        this.querySelector('.flip-card-front').style.transform = '';
+                        this.querySelector('.flip-card-front').style.boxShadow = '';
+                    }
+                });
+            });
+        }
+    </script>
 </body>
 </html>
